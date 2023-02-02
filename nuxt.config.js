@@ -26,10 +26,11 @@ export default {
           component:resolve(__dirname,'pages/indexList.vue')
         }),
         routes.push({
-          name:'root',
+          name:'root2',
           path:'/',
           component:resolve(__dirname,'pages/indexList.vue')
         })
+     
     }
   },
 

@@ -1,14 +1,14 @@
 <template>
   <div>
 
-    <div class="indexList">
+    <div class="indexList" style="margin-top:100px">
     <nuxt-link to="/indexList/synthesize">综合</nuxt-link>
     <nuxt-link to="/indexList/attention">关注</nuxt-link>
     <nuxt-link to="/indexList/afterEnd">后端</nuxt-link>
     <nuxt-link to="/indexList/leadingEnd">前端</nuxt-link>
     <nuxt-link to="/indexList">quan</nuxt-link>
 
-    <nuxt/>
+    <nuxt-child></nuxt-child>
   </div>
 
 

@@ -20,7 +20,7 @@
     <div class="centent">
       <TypeList></TypeList>
       <div class="centent_top">
-        <div class="left-article"><nuxt /></div>
+        <div class="left-article"><nuxt-child></nuxt-child></div>
 
         <div class="right-news">
           <Broadside></Broadside>

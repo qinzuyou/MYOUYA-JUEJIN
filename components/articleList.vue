@@ -14,7 +14,8 @@
     </div>
     <div class="centent">
       <ul>
-        <li id="cnetent-list" v-for="(item, index) of articlelist" :key="index">
+        <li id="cnetent-list" @mouseenter="cutclose(index)"  :class="{dlan:index==dlans+1}" v-for="(item, index) of articlelist" :key="index">
+          <div class="close" @click="dleteat(index)"  v-if="elclose==index"><i class="el-icon-close"></i></div>
           <div>
             <p>
               <span>{{ item.name }}</span> <span>{{ item.time }}</span
@@ -50,6 +51,8 @@
 export default {
   data() {
     return {
+      elclose:'',
+      dlans:'no',
       active: 0,
       navlist: [{ name: "推荐" }, { name: "最新" }, { name: "热榜" }],
       articlelist: [
@@ -148,6 +151,22 @@ export default {
     actives(index) {
       this.active = index;
     },
+    cutclose(index){
+        this.elclose=index
+    },
+    dleteat(index){
+
+      this.dlans=index
+    
+   setTimeout((index)=>{
+     this.articlelist.splice(index,1)
+     this.dlans='no'
+   },
+    
+500);
+
+   
+    }
   },
 };
 </script>
@@ -169,6 +188,7 @@ export default {
         font-size: $Font-Size;
         padding: 0 0.6rem;
         border-right: 1px solid hsla(0, 0%, 59.2%, 0.1);
+      
       }
       li:nth-child(3) {
         border: none;
@@ -182,6 +202,7 @@ export default {
 .centent {
   ul {
     li {
+      background-color: #fff;
       padding: 1rem 1rem 0 1rem;
       display: flex;
       align-items: center;
@@ -237,8 +258,23 @@ export default {
     padding: 0.5rem 0;
   }
 }
+.dlan{
+  transform: translate3d(0, -100%, 0);
+// opacity: 0;
+  transition: all 0.5s;
+}
 
 #cnetent-list {
+  position: relative;
+  .close{
+    position: absolute;
+    top: 1rem;
+    right:1rem;
+   font-size:1rem ;
+  }
+  .close:hover{
+    color: $type-bg;
+  }
   > div {
     border-bottom: 1px solid hsla(0, 0%, 59.2%, 0.1);
   }
