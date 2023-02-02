@@ -24,7 +24,7 @@ export default {
 
 <style lang="scss" >
 body{
-  background: #e4e6eb;
+  background: $juejin-bg;
   margin: 0 ;
   padding: 0;
   ul,p,li,span {

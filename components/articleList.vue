@@ -14,8 +14,8 @@
     </div>
     <div class="centent">
       <ul>
-        <li id="cnetent-list" @mouseenter="cutclose(index)"  :class="{dlan:index==dlans+1}" v-for="(item, index) of articlelist" :key="index">
-          <div class="close" @click="dleteat(index)"  v-if="elclose==index"><i class="el-icon-close"></i></div>
+        <li @click="toarticle(index)" id="cnetent-list" @mouseenter="cutclose(index)"  :class="{dlan:index==dlans+1}" v-for="(item, index) of articlelist" :key="index">
+          <div class="close" @click.stop="dleteat(index)"  v-if="elclose==index"><i class="el-icon-close"></i></div>
           <div>
             <p>
               <span>{{ item.name }}</span> <span>{{ item.time }}</span
@@ -166,6 +166,14 @@ export default {
 500);
 
    
+    },
+    toarticle(index){
+      this.$router.push({
+        path:'/article',
+        query:{
+          id:index
+        }
+      })
     }
   },
 };
