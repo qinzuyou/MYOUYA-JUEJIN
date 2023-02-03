@@ -32,6 +32,40 @@
         <p>一个帮助开发者成长的社区</p>
       </div>
     </div>
+
+    <div class="author-list">
+      <p class="author-title">🎖️作者榜</p>
+      <ul>
+        <li v-for="(item, index) of authorlist" :key="index">
+          <img :src="item.portrait" alt="" />
+          <div>
+            <p>
+              <span>{{ item.name }}</span
+              ><img
+                src="//lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web/img/lv-5.d08789d.png"
+                alt=""
+              />
+            </p>
+            <p>{{ item.antistop }}</p>
+          </div>
+        </li>
+      </ul>
+      <div class="at-bottm">
+        完整榜单<span><i class="el-icon-arrow-right"></i></span>
+      </div>
+    </div>
+
+    <div class="vade">
+      <ul>
+        <li v-for="(item, index) of vadelist" :key="index">
+          <img
+            :src="item.imgag"
+            alt=""
+          />
+          <p>{{item.title}}</p>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -50,6 +84,37 @@ export default {
             "https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8eeabe9914c5403088d45326638209e9~tplv-k3u1fbpfcp-no-mark:480:400:0:0.awebp?",
         },
       ],
+      authorlist: [
+        {
+          name: "大鱼瞪小猫",
+          portrait:
+            "https://p3-passport.byteimg.com/img/user-avatar/87a813af00e1bf3bf316792a408638f1~100x100.awebp",
+          antistop: "关键词",
+        },
+        {
+          name: "超神熊猫",
+          portrait:
+            "https://p3-passport.byteimg.com/img/user-avatar/12121a3dc99b9146fd7ef5cf4ff3db1b~100x100.awebp",
+          antistop: "关键词",
+        },
+      ],
+      vadelist: [
+        {
+          title: "稀土掘金漫游指南",
+          imgag:
+            "//lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web/img/juejin-tutu.d58819c.png",
+        },
+        {
+          title: "安装掘金浏览器插件",
+          imgag:
+            "//lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web/img/juejin-extension-icon.4b79fb4.png",
+        },
+        {
+          title: "前往掘金翻译计划",
+          imgag:
+            "//lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web/img/juejin-miner.b78347c.png",
+        }
+      ],
     };
   },
   methods: {
@@ -65,6 +130,89 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.vade {
+  background: #fff;
+
+  margin-top: 16px;
+  ul {
+  }
+  li {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    img {
+      width: 2.5rem;
+      margin-right: 0.8rem;
+    }
+    p {
+      font-size: 0.9rem;
+
+      color: #333;
+    }
+  }
+}
+.author-list {
+  .author-title {
+    padding: 1rem 1rem;
+    border-bottom: 1px solid hsla(0, 0%, 59.2%, 0.1);
+  }
+  margin-top: 16px;
+  background: #fff;
+  ul {
+    border-bottom: 1px solid hsla(0, 0%, 59.2%, 0.1);
+  }
+  .at-bottm {
+    padding: 0.9rem;
+
+    color: #007fff;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    i {
+      font-size: 1rem;
+      font-weight: 800;
+      margin-left: 0.3rem;
+    }
+  }
+  li {
+    padding: 1rem 1rem;
+    display: flex;
+    align-items: center;
+    p:nth-child(1) {
+      // display: inline-block;
+      vertical-align: top;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      img {
+        width: 35px;
+        height: 16px;
+        margin-left: 4px;
+      }
+    }
+    p:nth-child(2) {
+      color: #909090;
+      font-size: 0.8rem;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 2px;
+    }
+    img {
+      flex: 0 0 auto;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+    }
+  }
+}
+
 .advertising {
   > div {
     position: relative;
@@ -92,9 +240,8 @@ export default {
       font-size: 16px;
       font-weight: 600;
       height: 16px;
-     
- 
-    line-height: 24px;
+
+      line-height: 24px;
     }
     p {
       color: #8a919f;
@@ -132,7 +279,7 @@ export default {
   }
 }
 .app-link {
-    margin-top:16px ;
+  margin-top: 16px;
   display: flex;
   align-items: center;
   padding: 0.5rem;
@@ -149,13 +296,13 @@ export default {
     p:nth-child(1) {
       font-weight: 500;
       font-size: 14px;
-  
+
       color: #1d2129;
     }
     p:nth-child(2) {
       margin-top: 0.5rem;
       font-size: 12px;
-  
+
       color: #86909c;
     }
   }

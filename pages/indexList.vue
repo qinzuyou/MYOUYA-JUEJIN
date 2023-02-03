@@ -8,7 +8,9 @@
           v-for="(item, index) of list"
           :key="index"
         >
-          <nuxt-link :to="item.path">{{ item.name }}</nuxt-link>
+          <nuxt-link :to="{name:'indexList-name',params:{name:item.path},query:{}}">{{ item.name }}</nuxt-link>
+
+
         </li>
         <!-- <li><nuxt-link to="/indexList/attention">关注</nuxt-link></li> -->
 
@@ -18,7 +20,7 @@
     </div>
 
     <div class="centent">
-      <TypeList></TypeList>
+      <TypeList v-if="typelistshow"></TypeList>
       <div class="centent_top">
         <div class="left-article"><nuxt-child></nuxt-child></div>
 
@@ -40,19 +42,28 @@ export default {
   },
   data() {
     return {
+      typelistshow:false,
       activs: 0,
       offsetTop: 0,
       isFixed: false,
       isFixed2: false,
       list: [
-        { name: "综合", path: "/indexList/synthesize" },
-        { name: "关注", path: "/indexList/attention" },
-        { name: "后端", path: "/indexList/afterEed" },
-        { name: "前端", path: "/indexList/leadingEed" },
+        { name: "综合", path: 'synthesize' ,type:false},
+        { name: "关注", path: "attention" ,type:false},
+        { name: "后端", path: "afterEed",type:true },
+        { name: "前端", path: "leadingEed" ,type:true},
       ],
     };
   },
   methods: {
+    toarticlelist(index){
+        this.$router.push({
+          name:'indexList-id',
+          params:{name:this.list[index].path},
+          query:{}
+
+        })
+    },
     cut(index) {
       this.activs = index;
     },
@@ -67,6 +78,23 @@ export default {
       this.isFixed2 = scrollTop <= 400 ? true : false;
      
     },
+  },
+  watch:{
+    $route:{
+      immediate:true,
+      handler(route){
+          this.list.map((item,index)=>{
+           
+
+              if( `/indexList/${item.path}`==route.path ) {
+                this.typelistshow=item.type
+                console.log(11111111+this.typelistshow)
+              }
+
+         
+          })
+      }
+    }
   },
   mounted() {
     window.addEventListener("scroll", this.initHeight);

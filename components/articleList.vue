@@ -14,8 +14,8 @@
     </div>
     <div class="centent">
       <ul>
-        <li @click="toarticle(index)" id="cnetent-list" @mouseenter="cutclose(index)"  :class="{dlan:index==dlans+1}" v-for="(item, index) of articlelist" :key="index">
-          <div class="close" @click.stop="dleteat(index)"  v-if="elclose==index"><i class="el-icon-close"></i></div>
+        <li @click="toarticle(index)" id="cnetent-list" @mouseenter="cutclose(index)" @mouseleave="cutend" :class="{dlan:index==dlans+1}" v-for="(item, index) of articlelist" :key="index">
+          <div class="close" @click.stop="dleteat(index)"  v-if="elclose==index && closeshow"><i class="el-icon-close"></i></div>
           <div>
             <p>
               <span>{{ item.name }}</span> <span>{{ item.time }}</span
@@ -51,7 +51,8 @@
 export default {
   data() {
     return {
-      elclose:'',
+      elclose:'no',
+      closeshow:true,
       dlans:'no',
       active: 0,
       navlist: [{ name: "推荐" }, { name: "最新" }, { name: "热榜" }],
@@ -150,6 +151,12 @@ export default {
   methods: {
     actives(index) {
       this.active = index;
+      if(index==0){
+        this.closeshow=true
+      }else{
+        this.closeshow=false
+      }
+
     },
     cutclose(index){
         this.elclose=index
@@ -166,6 +173,9 @@ export default {
 500);
 
    
+    },
+    cutend(){
+      this.elclose='no'
     },
     toarticle(index){
       this.$router.push({
