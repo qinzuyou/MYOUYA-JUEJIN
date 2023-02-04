@@ -1,54 +1,73 @@
 <template>
-  <div
-    class="nav"
-    id="boxFixed"
-    :class="{ is_fixed: isFixed, is_fixed2: isFixed2 }"
-  >
-    <el-menu
-      :default-active="activeIndex"
-      @select="handleSelect"
-      active-text-color="#399"
-      mode="horizontal"
-      class="navtop"
-    >
-      <el-menu-item>
-        <img
-          src="	https://lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web/e08da34488b114bd4c665ba2fa520a31.svg
+  <div>
+    <div class="box" :class="{ is_fixed: isFixed, is_fixed2: isFixed2 }">
+      <div class="nav" id="boxFixed">
+        <el-menu
+          :default-active="activeIndex"
+          @select="handleSelect"
+          active-text-color="#399"
+          mode="horizontal"
+          class="navtop"
+        >
+          <el-menu-item>
+            <img
+              src="	https://lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web/e08da34488b114bd4c665ba2fa520a31.svg
 "
-          alt=""
-        />
-      </el-menu-item>
+              alt=""
+            />
+          </el-menu-item>
 
-      <el-menu-item
-        :class="{ actives: active == index ? true : false }"
-        @click="handmove(index)"
-        v-for="(item, index) of navs"
-        :key="index"
-        :index="index + ''"
-        >{{ item.title }}</el-menu-item
-      >
-    </el-menu>
+          <el-menu-item
+            :class="{ actives: active == index ? true : false }"
+            @click="handmove(index)"
+            v-for="(item, index) of navs"
+            :key="index"
+            :index="index + ''"
+            >{{ item.title }}</el-menu-item
+          >
+        </el-menu>
+
+        <ul class="nav-right">
+          <li class="search" :class="{ cut: cuts }">
+            <input type="text" @blur="cutend" @focus="cutstart" />
+            <div>
+              <i class="el-icon-zoom-in"></i>
+            </div>
+          </li>
+          <li class="fb" :class="{ cut2: cuts }">
+            <el-button type="primary">发布文章</el-button>
+          </li>
+
+          <li class="login">
+            <el-button type="primary" plain  @click="mdshow">登录</el-button>
+            <el-button type="primary" plain>注册</el-button>
+          </li>
+          <li class="profile">
+            <img
+              src="https://p3-passport.byteimg.com/img/mosaic-legacy/3791/5070639578~100x100.awebp"
+              alt=""
+            />
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal" v-if="modolshow" @click="mdshow">
+      <div class="modal-content" >111111</div>
+    </div>
   </div>
-
-  <!-- 
-  <nav>
-    <nuxt-link to="/index" active-class="app_header--active">首页</nuxt-link>
-    <nuxt-link to="/goods" active-class="app_header--active">商品</nuxt-link>
-    <nuxt-link to="/user" active-class="app_header--active">用户</nuxt-link>
-    <nuxt-link to="/reg" active-class="app_header--active">注册</nuxt-link>
-    <nuxt-link to="/login" active-class="app_header--active">登录</nuxt-link>
-  </nav> -->
 </template>
 
 <script>
 export default {
   data() {
     return {
+      modolshow:false,
       active: "-1",
       activeIndex: "0",
       offsetTop: 0,
       isFixed: false,
       isFixed2: false,
+      cuts: false,
       navs: [
         {
           path: "/indexList",
@@ -74,6 +93,17 @@ export default {
     };
   },
   methods: {
+    mdshow(){
+        this.modolshow=!this.modolshow
+    },
+    cutstart() {
+      console.log("获取焦点");
+      this.cuts = true;
+    },
+    cutend() {
+      console.log("失去焦点");
+      this.cuts = false;
+    },
     handleSelect(key, keyPath) {
       console.log(key);
       if (key == null) {
@@ -102,7 +132,6 @@ export default {
       //如果被卷曲的高度大于吸顶元素到顶端位置 的距离
       this.isFixed = scrollTop > 400 ? true : false;
       this.isFixed2 = scrollTop <= 400 ? true : false;
-     
     },
   },
   mounted() {
@@ -142,11 +171,120 @@ export default {
 </script>
 
 <style lang="scss"  scoped>
-/* .app_header--active {
-  background: #399;
-  color: #fff;
-} */
+.modal {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
+  .modal-content{
+    position: relative;
+    background-color:#fff;
+    border-radius: 8px;
+    width: 660px;
+    height: 200px;
+  }
+}
+
+.cut {
+  width: 400px !important;
+  border: 1px solid $type-bg !important;
+  > div {
+    background: #eaf2ff !important;
+  }
+  i {
+    color: $type-bg !important;
+  }
+  input {
+    width: 60% !important;
+  }
+}
+.cut2 {
+  width: 0 !important;
+
+  button {
+    width: 0 !important;
+    border: 0 !important;
+  }
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  .profile {
+    margin-left: 24px;
+    img {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+    }
+  }
+  .login {
+    display: flex;
+    margin-left: 24px;
+    button {
+      width: 60px;
+      height: 34px;
+      padding: 0;
+      span {
+      }
+    }
+  }
+  .fb {
+    margin-left: 24px;
+    width: 100px;
+    transition: all 0.4s;
+    button {
+      transition: all 0.4s;
+      width: 100px;
+      height: 34px;
+      padding: 0;
+    }
+  }
+  .search {
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 4px;
+    position: relative;
+    height: 2rem;
+    border: 1px solid #c2c8d1;
+    transition: width 0.4s;
+    width: 270px;
+    padding: 1px;
+    div {
+      position: absolute;
+      right: 2px;
+      width: 44px;
+      height: 30px;
+      background: $juejin-bg;
+      border-radius: 2px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    input {
+      border: none;
+      width: calc(100% - 44px);
+      padding: 0.6rem 0 0.6rem 1rem;
+      box-shadow: none;
+      outline: none;
+      font-size: 1.1rem;
+      color: #8a919f;
+      background-color: transparent;
+      transition: width 0.3s;
+    }
+  }
+}
 .is_fixed {
   transform: translate3d(0, -100%, 0);
   transition: all 0.2s;
@@ -155,20 +293,30 @@ export default {
   transform: translate3d(0, 0, 0);
   transition: all 0.2s;
 }
-.nav {
-  position: fixed;
-  top: 0;
-  z-index: 1;
-
+.box {
   width: 100%;
   background: #fff;
   border-bottom: 1px solid #f1f1f1;
   padding: 0.4rem 0;
+
+  position: fixed;
+  top: 0;
+  z-index: 1;
+}
+.nav {
+  // width: 100%;
+
+  // width: 100%;
+
+  display: flex;
+  width: 1440px;
+  margin: 0 auto;
+  justify-content: space-between;
 }
 .navtop {
-  width: 1440px;
+  // width: 1440px;
   height: 3rem;
-  margin: 0 auto;
+  // margin: 0 auto;
   display: flex;
   align-items: center;
   border: none !important;

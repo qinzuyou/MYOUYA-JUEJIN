@@ -44,6 +44,8 @@
         </li>
       </ul>
     </div>
+
+   
   </div>
 </template>
 
@@ -190,6 +192,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .active {
   color: $type-bg !important;
 }
