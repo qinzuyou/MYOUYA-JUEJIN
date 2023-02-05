@@ -35,7 +35,7 @@
             </div>
           </li>
           <li class="fb" :class="{ cut2: cuts }">
-            <el-button type="primary">发布文章</el-button>
+            <el-button type="primary" @click="toissue">发布文章</el-button>
           </li>
 
           <li class="login">
@@ -51,14 +51,21 @@
         </ul>
       </div>
     </div>
-    <div class="modal" v-if="modolshow" @click="mdshow">
-      <div class="modal-content" >111111</div>
+    <div class="modal" v-if="modolshow">
+      <div class="modal-content">
+        <div class="mdclose" @click="mdshow"><i class="el-icon-close"></i></div>
+        <Lore></Lore>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import Lore from '@/components/lore.vue'
 export default {
+  components:{
+    Lore
+  },
   data() {
     return {
       modolshow:false,
@@ -93,6 +100,13 @@ export default {
     };
   },
   methods: {
+    toissue(){
+      this.$router.push({
+
+        path:'/issue',
+      }
+      )
+    },
     mdshow(){
         this.modolshow=!this.modolshow
     },
@@ -171,6 +185,13 @@ export default {
 </script>
 
 <style lang="scss"  scoped>
+.mdclose{
+  position: absolute;
+  right: 10px;
+  top: 14px;
+  font-size:1.2rem ;
+
+}
 .modal {
   width: 100%;
   height: 100%;
@@ -187,10 +208,11 @@ export default {
 
   .modal-content{
     position: relative;
+    top: -20%;
     background-color:#fff;
     border-radius: 8px;
-    width: 660px;
-    height: 200px;
+    width:500px;
+
   }
 }
 

@@ -44,7 +44,11 @@ export default {
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     'assets/css/transltion.css',
-    {src:'element-ui/lib/theme-chalk/index.css'}
+    {src:'element-ui/lib/theme-chalk/index.css'},
+    '~assets/css/editor.css',
+    'quill/dist/quill.snow.css',
+    'quill/dist/quill.bubble.css',
+    'quill/dist/quill.core.css'
 
   ],
 
@@ -58,6 +62,10 @@ export default {
     {
       src:'~/plugins/element-ui',
       ssr:true //不支持ssr的插件只会在客户端运行不要true
+    },
+    {
+      src:'@/plugins/vue-quill-editor',
+      ssr:false
     }
   ],
   axios:{
