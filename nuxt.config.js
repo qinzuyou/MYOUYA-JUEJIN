@@ -96,7 +96,8 @@ export default {
   modules: [
     '@nuxtjs/axios',
     
-    '@nuxtjs/style-resources'
+    '@nuxtjs/style-resources',
+
 
     
   ],

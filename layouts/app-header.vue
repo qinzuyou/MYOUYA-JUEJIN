@@ -103,7 +103,7 @@ export default {
     toissue(){
       this.$router.push({
 
-        path:'/issue',
+        path:'/issue2',
       }
       )
     },
