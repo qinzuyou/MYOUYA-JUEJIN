@@ -13,14 +13,28 @@
       </ul>
     </div>
     <div class="centent">
-      <ul>
-        <li @click="toarticle(index)" id="cnetent-list" @mouseenter="cutclose(index)" @mouseleave="cutend" :class="{dlan:index==dlans+1}" v-for="(item, index) of articlelist" :key="index">
-          <div class="close" @click.stop="dleteat(index)"  v-if="elclose==index && closeshow"><i class="el-icon-close"></i></div>
+      <ul  v-if="!articledata.length==0">
+        <li
+          @click="toarticle(item.id)"
+          id="cnetent-list"
+          @mouseenter="cutclose(index)"
+          @mouseleave="cutend"
+          :class="{ dlan: index == dlans + 1 }"
+          v-for="(item, index) of articledata"
+          :key="index"
+        >
+          <div
+            class="close"
+            @click.stop="dleteat(index)"
+            v-if="elclose == index && closeshow"
+          >
+            <i class="el-icon-close"></i>
+          </div>
           <div>
             <p>
-              <span>{{ item.name }}</span> <span>{{ item.time }}</span
+              <span>{{ item.author }}</span> <span>{{ item.releasetime | formatDate('yyyy年MM月dd日') }}</span
               ><span>{{ item.type }}</span
-              ><span>·</span><span>程序员</span>
+              >
             </p>
             <p class="title">{{ item.title }}</p>
             <p>
@@ -31,173 +45,121 @@
                 <div>
                   <i class="el-icon-edit"></i>
                 </div>
-                <div>11111</div>
+                <div>{{ item.give || 0}}</div>
               </div>
               <div>
                 <div>
                   <i class="el-icon-edit"></i>
                 </div>
-                <div>11111</div>
+                <div>{{item.hits || 0}}</div>
               </div>
             </div>
           </div>
         </li>
       </ul>
-    </div>
 
-   
+      <div class="nulldata" v-else>
+        <p>暂无数据</p>
+      </div>
+      <div><el-skeleton v-if="$store.state.bLoading" class="skel" :rows="6" animated /></div>
+     
+    </div>
   </div>
+
 </template>
 
 <script>
 export default {
+  props:["articledata"],
   data() {
     return {
-      elclose:'no',
-      closeshow:true,
-      dlans:'no',
+      loading:false,
+      elclose: "no",
+      closeshow: true,
+      dlans: "no",
       active: 0,
       navlist: [{ name: "推荐" }, { name: "最新" }, { name: "热榜" }],
       articlelist: [
-        {
-          name: "秃了秃了",
-          title: "可怕的35岁-大龄程序员2022年终总结",
-          centent:
-            "35岁是程序员的一道坎，几年前第一次听说时内心就充满了焦虑。总是想着要做些什么改变好从容的面对。但是",
-          time: "4天前",
-          type: "后端",
-        },
-        {
-          name: "秃了秃了",
-          title: "可怕的35岁-大龄程序员2022年终总结",
-          centent:
-            "35岁是程序员的一道坎，几年前第一次听说时内心就充满了焦虑。总是想着要做些什么改变好从容的面对。但是",
-          time: "4天前",
-          type: "后端",
-        },
-        {
-          name: "秃了秃了",
-          title: "可怕的35岁-大龄程序员2022年终总结",
-          centent:
-            "35岁是程序员的一道坎，几年前第一次听说时内心就充满了焦虑。总是想着要做些什么改变好从容的面对。但是",
-          time: "4天前",
-          type: "后端",
-        },
-        {
-          name: "秃了秃了",
-          title: "可怕的35岁-大龄程序员2022年终总结",
-          centent:
-            "35岁是程序员的一道坎，几年前第一次听说时内心就充满了焦虑。总是想着要做些什么改变好从容的面对。但是",
-          time: "4天前",
-          type: "后端",
-        },
-        {
-          name: "秃了秃了",
-          title: "可怕的35岁-大龄程序员2022年终总结",
-          centent:
-            "35岁是程序员的一道坎，几年前第一次听说时内心就充满了焦虑。总是想着要做些什么改变好从容的面对。但是",
-          time: "4天前",
-          type: "后端",
-        },
-        {
-          name: "秃了秃了",
-          title: "可怕的35岁-大龄程序员2022年终总结",
-          centent:
-            "35岁是程序员的一道坎，几年前第一次听说时内心就充满了焦虑。总是想着要做些什么改变好从容的面对。但是",
-          time: "4天前",
-          type: "后端",
-        },
-        {
-          name: "秃了秃了",
-          title: "可怕的35岁-大龄程序员2022年终总结",
-          centent:
-            "35岁是程序员的一道坎，几年前第一次听说时内心就充满了焦虑。总是想着要做些什么改变好从容的面对。但是",
-          time: "4天前",
-          type: "后端",
-        },
-        {
-          name: "秃了秃了",
-          title: "可怕的35岁-大龄程序员2022年终总结",
-          centent:
-            "35岁是程序员的一道坎，几年前第一次听说时内心就充满了焦虑。总是想着要做些什么改变好从容的面对。但是",
-          time: "4天前",
-          type: "后端",
-        },
-        {
-          name: "秃了秃了",
-          title: "可怕的35岁-大龄程序员2022年终总结",
-          centent:
-            "35岁是程序员的一道坎，几年前第一次听说时内心就充满了焦虑。总是想着要做些什么改变好从容的面对。但是",
-          time: "4天前",
-          type: "后端",
-        },
-        {
-          name: "秃了秃了",
-          title: "可怕的35岁-大龄程序员2022年终总结",
-          centent:
-            "35岁是程序员的一道坎，几年前第一次听说时内心就充满了焦虑。总是想着要做些什么改变好从容的面对。但是",
-          time: "4天前",
-          type: "后端",
-        },
-        {
-          name: "秃了秃了",
-          title: "可怕的35岁-大龄程序员2022年终总结",
-          centent:
-            "35岁是程序员的一道坎，几年前第一次听说时内心就充满了焦虑。总是想着要做些什么改变好从容的面对。但是",
-          time: "4天前",
-          type: "后端",
-        },
+       
+      
+   
       ],
     };
   },
+  created(){
+    console.log(this.articledata,46465456111)
+
+  },
+  mounted(){
+  
+  },
   methods: {
+
+    start(){
+            this.loading = true
+        },
+        finish(){
+            this.loading = false
+        },
+
+
     actives(index) {
       this.active = index;
-      if(index==0){
-        this.closeshow=true
-      }else{
-        this.closeshow=false
+      if (index == 0) {
+        this.closeshow = true;
+      } else {
+        this.closeshow = false;
       }
+    },
+    cutclose(index) {
+      this.elclose = index;
+    },
+    dleteat(index) {
+      this.dlans = index;
+
+      setTimeout(
+        (index) => {
+          this.articledata.splice(index, 1);
+          this.dlans = "no";
+        },
+
+        500
+      );
+    },
+    cutend() {
+      this.elclose = "no";
+        
 
     },
-    cutclose(index){
-        this.elclose=index
-    },
-    dleteat(index){
-
-      this.dlans=index
     
-   setTimeout((index)=>{
-     this.articlelist.splice(index,1)
-     this.dlans='no'
-   },
-    
-500);
-
-   
-    },
-    cutend(){
-      this.elclose='no'
-    },
-    toarticle(index){
+    toarticle(id) {
       this.$router.push({
-        path:'/article',
-        query:{
-          id:index
-        }
-      })
-    }
+        path: "/article",
+        query: {
+          id: id,
+        },
+      });
+    },
   },
+
+  // async asyncData($axios) {
+  //   $axios.$Api
+  //     .getarticleselect()
+  //     .then((data) => {
+  //       console.log(data,"文章列表")
+  //     })
+  //     .catch((data) => {});
+  // },
 };
 </script>
 
 <style lang="scss" scoped>
-
 .active {
   color: $type-bg !important;
 }
 .article {
   background-color: #fff;
+
   .nav {
     padding: 1rem 1rem;
     border-bottom: 1px solid hsla(0, 0%, 59.2%, 0.1);
@@ -209,7 +171,6 @@ export default {
         font-size: $Font-Size;
         padding: 0 0.6rem;
         border-right: 1px solid hsla(0, 0%, 59.2%, 0.1);
-      
       }
       li:nth-child(3) {
         border: none;
@@ -218,6 +179,16 @@ export default {
         color: $type-bg;
       }
     }
+  }
+}
+.skel{
+  padding:0.8rem;
+}
+.nulldata{
+  text-align:center;
+  padding: 2rem;
+  p{
+   color: #000 !important;
   }
 }
 .centent {
@@ -279,21 +250,21 @@ export default {
     padding: 0.5rem 0;
   }
 }
-.dlan{
+.dlan {
   transform: translate3d(0, -100%, 0);
-// opacity: 0;
+  // opacity: 0;
   transition: all 0.5s;
 }
 
 #cnetent-list {
   position: relative;
-  .close{
+  .close {
     position: absolute;
     top: 1rem;
-    right:1rem;
-   font-size:1rem ;
+    right: 1rem;
+    font-size: 1rem;
   }
-  .close:hover{
+  .close:hover {
     color: $type-bg;
   }
   > div {

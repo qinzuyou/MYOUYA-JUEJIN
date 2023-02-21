@@ -6,7 +6,7 @@
     <h1 v-else>
         应用发生异常
     </h1>
-    <button @click="$router.replace('/index')">回首页</button>
+    <button @click="$router.replace('/')">回首页</button>
   
   </div>
 </template>

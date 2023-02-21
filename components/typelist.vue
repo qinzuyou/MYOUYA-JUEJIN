@@ -1,21 +1,25 @@
 <template>
   <div class="box">
     <ul  class="type-list">
-      <li @click="actives(index)" :class="{'active':active==index?true:false}"  v-for="(item, index) of list" :key="index">{{ item.name }}</li>
+    
+      <li @click="actives(index)" :class="{'active':active==index?true:false}"  v-for="(item, index) of  articletype.slice(0,8)" :key="index">{{ item.typename }}</li>
+      <li v-show="len" @click="actives(index+8)" :class="{'active':active==index+8?true:false}"  v-for="(item, index) of  articletype.slice(8,articletype.length)" :key="index+8">{{ item.typename }}</li>
+     
+      <li class="lent" @click="zank()" > <span v-if="!len">展开 <i class="el-icon-caret-bottom"></i></span>   <span v-else>收起 <i class="el-icon-caret-top"></i></span></li>
     </ul>
   </div>
 </template>
 
 <script>
 export default {
+  props:["type"],
+
   data() {
     return {
         active:'0',
-      list: [
-        { name: "全部" },
-        { name: "后端" },
-        { name: "掘金·日新计划" },
-        { name: "java" },
+        len:false,
+        articletype: [
+      
       ],
     };
   },
@@ -23,8 +27,22 @@ export default {
     actives(index){
         this.active=index
         console.log(index)
+  
+    },
+    zank(){
+      this.len=!this.len
     }
-  }
+  },
+  created(){
+    this.articletype=this.type
+    console.log(this.type,555)
+
+
+
+  },
+
+
+
 };
 </script>
 
@@ -32,6 +50,9 @@ export default {
 .active{
     background: $type-bg !important;
     color: #fff !important;
+}
+.lent:hover{
+  color:$type-bg !important;
 }
 .type-list {
   width: 100%;

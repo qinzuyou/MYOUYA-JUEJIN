@@ -36,21 +36,36 @@
     <div class="author-list">
       <p class="author-title">🎖️作者榜</p>
       <ul>
-        <li v-for="(item, index) of authorlist" :key="index">
-          <img :src="item.portrait" alt="" />
+        <li v-for="(item, index) of userdata.slice(0,3)" :key="index">
+          <img :src="item.profile" alt="" />
           <div>
             <p>
-              <span>{{ item.name }}</span
+              <span>{{ item.nickname }}</span
               ><img
-                src="//lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web/img/lv-5.d08789d.png"
+              src="../assets/img/lv-5.png"
                 alt=""
               />
             </p>
             <p>{{ item.antistop }}</p>
           </div>
         </li>
+        <li v-show="len" v-for="(item, index) of userdata.slice(3,userdata.length)" :key="index+3">
+          <img :src="item.profile" alt="" />
+          <div>
+            <p>
+              <span>{{ item.nickname }}</span
+              ><img
+              src="../assets/img/lv-5.png"
+                alt=""
+              />
+            </p>
+            <p>{{ item.antistop }}</p>
+          </div>
+        </li>
+
+
       </ul>
-      <div class="at-bottm">
+      <div @click="lent" class="at-bottm">
         完整榜单<span><i class="el-icon-arrow-right"></i></span>
       </div>
     </div>
@@ -71,8 +86,10 @@
 
 <script>
 export default {
+  props:['userdata'],
   data() {
     return {
+      len:false,
       cut: "-1",
       advertisinglist: [
         {
@@ -118,6 +135,9 @@ export default {
     };
   },
   methods: {
+    lent(){
+      this.len=!this.len
+    },
     mous(index) {
       this.cut = index;
     },
@@ -126,6 +146,7 @@ export default {
       this.cut = -1;
     },
   },
+  
 };
 </script>
 

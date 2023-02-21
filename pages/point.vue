@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h3>评论详情页</h3>
+  <div style="margin-top: 200px;">
+    暂无内容
   </div>
 </template>
 

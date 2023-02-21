@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'juejin',
+    title: '稀土掘金',
     htmlAttrs: {
       lang: 'en'
     },
@@ -54,11 +54,19 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~/plugins/router',
     {
-      src:'~/plugins/axios',
-      ssr:true //服务端
+      src: '@/plugins/dateformat',
+      ssr: true
     },
+    '~/plugins/router',
+    {src:'~/plugins/request',ssr:true},
+    
+      { src: '@/plugins/localStorage', ssr: false},
+   
+    // {
+    //   src:'~/plugins/axios',
+    //   ssr:true //服务端
+    // },
     {
       src:'~/plugins/element-ui',
       ssr:true //不支持ssr的插件只会在客户端运行不要true

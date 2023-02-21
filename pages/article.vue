@@ -1,8 +1,11 @@
 <template>
   <div>
-    <ul class="give">
+ 
+
+    <div class="article">
+      <ul class="give">
       <li>
-        <div>77</div>
+        <div>{{articledata.give || 0}}</div>
         <i class="el-icon-star-on"></i>
       </li>
       <li>
@@ -22,53 +25,61 @@
       </li>
     </ul>
 
-    <div class="article">
-      <div class="centent">
+
+      <div class="centent" ref="aContent">
         <div class="title">
-          练习时长长达两年半的前端练习生——折腾半生，归来仍是菜鸡🥬🐤
+          {{articledata.title}}
         </div>
 
         <div class="author">
           <img
-            src="https://p3-passport.byteimg.com/img/user-avatar/b6bfc3ccd6d610412b216b9c346ef533~100x100.awebp"
+            :src="userdata.profile"
             alt=""
           />
           <div class="author-left">
             <div class="name">
-              <span>秃了秃了</span>
+              <span>{{userdata.nickname}}</span>
               <img
-                src="//lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web/img/lv-6.b69935b.png"
+                src="../assets/img/lv-5.png"
                 alt=""
               />
             </div>
             <div class="name-bottom">
-              <span>2023年02月2日11:00</span>
+              <span>{{articledata.releasetime | formatDate('yyyy年MM月dd日')}}</span>
               <span>·</span>
               <span>阅读</span>
-              <span>10000</span>
+              <span>{{articledata.hits || 0}}</span>
+            </div>
+
+            <div class="ssgz">
+              <el-button type="primary" plain>  <i class="el-icon-plus"></i>关注</el-button>
             </div>
           </div>
         </div>
 
-        <h1>文章id{{ aticleid }}</h1>
+        <!-- <h1>文章id{{ articledata.id}}</h1> -->
+
+        <div class="contentbox" v-html="articledata.content">
+          
+        </div>
       </div>
       <div class="article-right">
         <div class="broadside-top">
           <div class="author2">
             <img
-              src="https://p3-passport.byteimg.com/img/user-avatar/b6bfc3ccd6d610412b216b9c346ef533~100x100.awebp"
+            :src="userdata.profile"
               alt=""
             />
             <div class="author-left">
               <div class="name">
-                <span>秃了秃了</span>
+                <span>{{userdata.account}}</span>
                 <img
-                  src="//lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web/img/lv-6.b69935b.png"
+                src="../assets/img/lv-5.png"
                   alt=""
                 />
               </div>
               <div class="name-bottom">
-                <span>关键字</span>
+                <span>{{userdata.antistop}}</span>
               </div>
             </div>
           </div>
@@ -105,8 +116,8 @@
             <li class="co-li" v-for="(item, index) of corrlist" :key="index">
               <p class="co-title">{{ item.title }}</p>
               <p class="co-p">
-                <span>{{ item.dz }}点赞</span><span>·</span
-                ><span>{{ item.pl }}评论</span>
+                <span>{{ item.give || 0}}点赞</span><span>·</span
+                ><span>{{ item.pl  || 0}}评论</span>
               </p>
             </li>
           </ul>
@@ -114,7 +125,7 @@
 
         <div class="catalogue">
           <p class="ca-title">目录</p>
-          <ul>
+          <!-- <ul>
             <li
               class="ca-li"
               v-for="(item, index) of catalist"
@@ -124,16 +135,23 @@
             >
               <a href="javaScript:void(0);">{{ item.title }}</a>
             </li>
-          </ul>
+          </ul> -->
+
+          <el-tree
+            :data="tocData2"
+            :props="defaultProps"
+            @node-click="handleNodeClick"
+          ></el-tree>
         </div>
 
         <div class="next-article">
           <div class="ne-top">
-            <p class="ne-title">下一篇</p>
+            <p class="ne-title" @click="nextacrticle(articledata.id)">下一篇</p>
             <div><i class="el-icon-s-unfold"></i></div>
           </div>
           <div class="next-next">
-            <p>秃秃秃秃秃秃秃秃秃秃秃秃</p>
+            <p v-if="nextw" @click="toarticle(nextw.id)">{{nextw.title}}</p>
+            <p v-else>没有更多了</p>
           </div>
         </div>
       </div>
@@ -145,8 +163,32 @@
 export default {
   data() {
     return {
+     
+      nextw:'',
+      defaultProps: {
+        children: "children",
+        label: "label",
+      },
+      tocData2: [],
+      tocData: [
+        {
+          label: "一级 1",
+          children: [
+            {
+              label: "二级 1-1",
+              children: [
+                {
+                  label: "三级 1-1-1",
+                },
+              ],
+            },
+          ],
+        },
+   
+      ],
+
       cutcas: "0",
-      aticleid:'',
+      aticleid: "",
       corrlist: [
         { title: "秃了秃了", dz: 14, pl: 18 },
         { title: "秃了秃了", dz: 14, pl: 18 },
@@ -155,33 +197,286 @@ export default {
     };
   },
   methods: {
+
+    toarticle(id) {
+    let{href}=  this.$router.resolve({
+        path: "/article",
+        query: {
+          id: id,
+        },
+      });
+
+      window.open(href, "_blank")
+      // setTimeout(function () {
+      //    window.location.reload();
+      //   }, 100);
+    },
+
+
+  async  alllist(){
+      let params={
+      condition:{
+          type:this.articledata.type
+        }, 
+   
+    }
+    const res =await this.$Api.getarticleselect(params).then(data=>{
+      // console.log(data)
+      return data.respond.data
+    }).catch(data=>{
+      console.log("请求失败")
+    })
+
+    return res
+
+    },
+
+
+
+   async nextacrticle(){
+    let id = this.$route.query.id
+    let res = await this.alllist()
+
+    let newindex =res.map((item,index)=>{
+      if(item.id==id){
+        return index
+      }else{
+        return
+      }
+    })
+  let cnewindex=0
+
+
+    for(let i=0;i<newindex.length;i++){
+      if(newindex[i]){
+        cnewindex=newindex[i]
+      }
+    }
+    
+    return cnewindex
+
+ 
+     },
+
     cutca(index) {
       this.cutcas = index;
     },
+    handleNodeClick(data) {
+      console.log(data);
+    },
+
+    toTree(data) {
+      // 删除 所有 children,以防止多次调用
+      data.forEach(function (item) {
+        delete item.children;
+      });
+
+      // 将数据存储为 以 id 为 KEY 的 map 索引数据列
+      var map = {};
+      data.forEach(function (item) {
+        map[item.id] = item;
+      });
+      var val = [];
+      data.forEach(function (item) {
+        // 以当前遍历项的pid,去map对象中找到索引的id
+        var parent = map[item.p_id];
+        // 好绕啊，如果找到索引，那么说明此项不在顶级当中,那么需要把此项添加到，他对应的父级中
+        if (parent) {
+          (parent.children || (parent.children = [])).push(item);
+        } else {
+          //如果没有在map中找到对应的索引ID,那么直接把 当前的item添加到 val结果集中，作为顶级
+          val.push(item);
+        }
+      });
+      console.log(val);
+      return val;
+    },
+
+    /**
+     * 生成目录
+     * */
+    makeToc() {
+      if (process.client) {
+        this.$nextTick(() => {
+          // 定义参与目录生成的标签
+          const tocTags = ["H1", "H2", "H3", "H4", "H5", "H6"];
+
+          // 目录树结果
+          const tocArr = [];
+
+          // 获取所有标题标签
+          const headDoms = Array.from(this.$refs.aContent.childNodes).filter(
+            (item) => tocTags.includes(item.tagName)
+          );
+
+          // 遍历标题标签
+          headDoms.forEach((item, index, arr) => {
+            // 给标题添加id
+            item.id = `h-${index + 1}`;
+            // 获取当前节点前面的节点
+            let prevs = arr.filter((i, j) => j < index);
+            // 过滤前面的节点为合理节点
+            // 如 h3节点前  只能为 h1 h2 h3
+            prevs = prevs.filter((i) =>
+              tocTags
+                .filter(
+                  (i, j) => j <= tocTags.findIndex((i) => i == item.tagName)
+                )
+                .includes(i.tagName)
+            );
+            // 对前面的节点进行排序，距离自身节点近的排在前面
+            // 如 div > p > span > img  当前为img
+            // 常规获取节点为 [div,p,span,img]
+            // 排序后获取节点为 [img,span,p,div]
+            prevs = prevs.sort(
+              (a, b) => -a.id.replace("h-", "") - b.id.replace("h-", "")
+            );
+            // 查询距离自身节点最近的不同于当前标签的节点
+            const prev = prevs.find((i) => i.tagName != item.tagName);
+
+            tocArr.push({
+              id: index + 1, // 抛出id
+              tag: item.tagName, // 抛出标签名称
+              label: item.innerText, // 抛出标题
+              p_id:
+                item.tagName == "H1" ? 0 : Number(prev.id.replace("h-", "")), // 抛出父级id
+            });
+          });
+
+          // 使用上述方法生成树 最后在el-tree的data中使用 tocData即可
+          this.tocData2 = this.toTree(tocArr);
+        });
+      }
+    },
   },
-  created(){
-    this.aticleid=this.$route.query.id
+  async created() {
+
+    
+
+
+    this.aticleid = this.$route.query.id;
+    console.log(this.articledata,"wz")
+    console.log(this.userdata,"wz")
+    console.log(await this.nextacrticle(),'nnnnn')
+
+    let nextws= await this.alllist()
+    this.corrlist=nextws
+  if(nextws[await this.nextacrticle()+1]){
+    this.nextw=nextws[await this.nextacrticle()+1]
+  }else{
+    this.nextw=''
+  }
+    
+  console.log(this.nextw,'ggggg')
+
+  },
+  mounted() {
+    this.makeToc();
+  },
+
+  async asyncData({query,$axios},){
+    console.log("文章页",$axios.$get,query,455)
+
+    const articledata = await $axios.$get('http://127.0.0.1:8081/article/select',{
+      params:{
+          condition:{
+         id:query.id
+        }, 
+        pagination:{
+          size:1,
+          page:1,
+        
+        }
+        
+      }
+    }
+    )
+      .then((data) => {
+        console.log(data, "文章页999999", );
+        return data.respond.data[0] 
+      })
+      .catch((data) => {
+        console.log("文章亲求失败");
+      });
+
+
+      const userdata = await $axios.$get('http://127.0.0.1:8081/users/select',{
+      params:{    
+            account:articledata.author,
+        
+        // pagination:{
+        //   size:1,
+        //   page:1,
+        
+        // }
+      }
+    }
+    )
+      .then((data2) => {
+        console.log(data2, "用户查询999999", );
+        return data2.respond.data[0]
+      })
+      .catch((data2) => {
+        console.log("用户查询失败");
+      });
+
+      userdata.profile="http://127.0.0.1:8081"+userdata.profile
+
+
+
+
+      return {
+        articledata:articledata,
+        userdata:userdata
+
+      }
   }
 };
+
+
 </script>
 
 <style lang="scss" scoped>
-.report{
-    margin-top:40px ;
+
+@media screen and (max-width: 1180px){
+.centent{
+ 
+}
+.article-right{
+  display: none;
+}
+.article{
+  width: 100% !important;
+}
+
+.ssgz{
+  display: block !important;
+}
+}
+.el-tree {
+  overflow: hidden !important;
+
+text-overflow: ellipsis !important;
+
+white-space: nowrap !important; 
+
+}
+.report {
+  margin-top: 40px;
 }
 .give {
-  position: fixed;
-  left: 190px;
+  position:absolute;
+  left: -100px;
   top: 140px;
-  z-index: 2;
-  .give-bottom::after{
-   content: '';
-   display: block;
-   width: 30px;
-   height: 1px;
-   background: #ccc;
-   position: absolute;
-   bottom: -20px;
+
+  .give-bottom::after {
+    content: "";
+    display: block;
+    width: 30px;
+    height: 1px;
+    background: #ccc;
+    position: absolute;
+    bottom: -20px;
   }
   li {
     > div {
@@ -194,7 +489,7 @@ export default {
       border-radius: 9px;
       width: 25px;
       height: 20px;
-      font-size:0.7rem ;
+      font-size: 0.7rem;
       line-height: 20px;
       text-align: center;
     }
@@ -213,9 +508,9 @@ export default {
     box-shadow: 0 2px 4px 0 rgb(0 0 0 / 4%);
     cursor: pointer;
     text-align: center;
-    
-    i{
-        font-size:1.7rem ;
+
+    i {
+      font-size: 1.7rem;
     }
   }
 }
@@ -402,9 +697,23 @@ export default {
 }
 
 .author {
-  margin-top: 1.5rem;
+  position: relative;
+  margin: 1.5rem 0;
   display: flex;
   align-items: center;
+
+  .ssgz{
+      position: absolute;
+      right: 0;
+      top: 50%;
+      display: none;
+      button{
+        
+        width: 70px;
+        height: 30px;
+        padding: 0;
+      }
+    }
   img {
     flex: 0 0 auto;
     margin-right: 1rem;
@@ -413,6 +722,8 @@ export default {
     border-radius: 50%;
   }
   .author-left {
+  
+
     .name {
       display: flex;
       align-items: center;
@@ -500,13 +811,15 @@ export default {
   }
 }
 .article {
+  position: relative;
   display: flex;
-  width: 1140px;
+  width: 70%;
   margin: 0 auto;
   margin-top: 80px;
 
   .centent {
-    width: 820px;
+    // width: 820px;
+    flex: 6;
     margin-right: 20px;
     background: #fff;
     border-radius: 4px 4px 0 0;
@@ -519,7 +832,8 @@ export default {
     }
   }
   .article-right {
-    width: 300px;
+    // width: 300px;
+    flex: 1;
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div v-if="loading">
-        loading...
+    <div  class="ld"  v-if="loading">
+        <img src="~/assets/img/loading.gif" alt="">
     </div>
    
   </div>
@@ -10,19 +10,37 @@
 <script>
 export default {
     data:()=>({
-        loading:false
+        loading:false,
+
     }),
     methods:{
         start(){
             this.loading = true
+   
+                this.$store.commit('cutloding',true)
         },
         finish(){
-            this.loading = false
-        }
+            this.$store.commit('cutloding',false)
+ 
+           this.loading=false
+           
+        },
+
+
     }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.ld{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 99999;
+    img{
+      width: 100px;
+      height: 100px;
+    }
+}
 
 </style>

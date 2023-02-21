@@ -4,12 +4,17 @@ import VueX from 'vuex'
 
 Vue.use(VueX)
 export const state=()=>({
-    bNav:false,
+    bNav:true,
     bLoading:false
 });
 
 //mutations  
 export const mutations = {
+
+    cutloding(state,data){
+        state.bNav=data
+    },
+ 
     M_UPDATE_NAV(state,payload){
         state.bNav = payload;
     },
