@@ -23,7 +23,37 @@ created(){
   async asyncData({params,$axios},){
     console.log(454545,$axios.$get,params)
 
-    const articledata = await $axios.$get('http://127.0.0.1:8081/article/select',{
+    if(params.name=="综合"||params.name==undefined){
+      const articledata = await $axios.$get('http://127.0.0.1:8081/article/select',{
+      params:{
+        
+
+        //   condition:{
+        //   type:''
+        // }, 
+        // pagination:{
+        //   size:,
+        //   page:'',
+        
+        // }
+        
+      }
+    }
+    
+    )
+      .then((data) => {
+        console.log(data, "文章列表999999", );
+        return data.respond.data
+      })
+      .catch((data) => {
+        console.log("文章亲求失败");
+      });
+
+      return {
+        articledata:articledata
+      }
+    }else{
+      const articledata = await $axios.$get('http://127.0.0.1:8081/article/select',{
       params:{
         
 
@@ -51,6 +81,10 @@ created(){
       return {
         articledata:articledata
       }
+      }
+
+
+   
   }
 }
 </script>

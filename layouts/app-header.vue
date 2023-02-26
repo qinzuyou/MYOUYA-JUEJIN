@@ -39,7 +39,10 @@
               ><i class="el-icon-caret-bottom" :class="{ xuan: xuan }"></i
             ></span>
           </p>
+
+          <div class="nav-modal">
           <ul v-if="nshow">
+
             <li
               :class="{ active2: active2 == index }"
               @click="toppage(index)"
@@ -48,7 +51,9 @@
             >
               {{ item.title }}
             </li>
+
           </ul>
+        </div>
         </div>
 
         <ul class="nav-right">
@@ -356,6 +361,7 @@ export default {
     display: block !important;
   }
 }
+
 @media screen and (max-width: 1022px) {
   .fb {
     display: none !important;
@@ -452,10 +458,10 @@ export default {
     display: block;
     position: absolute;
     top: 50px;
-    z-index: 1;
+
     padding: 0.667rem;
     width: 8rem;
-
+    z-index: 3;
     background-color: #fff;
     box-shadow: 0 8px 24px rgb(81 87 103 / 16%);
     border: 1px solid #ebebeb;
@@ -522,6 +528,7 @@ export default {
   align-items: center;
   .profile {
     margin-left: 24px;
+    text-align: center;
     img {
       width: 2.5rem;
       height: 2.5rem;

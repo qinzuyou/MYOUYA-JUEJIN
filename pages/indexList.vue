@@ -296,7 +296,7 @@ this.activs2 = index;
 .index-nav {
   position: fixed;
   top: 61px;
-  z-index: 2;
+  z-index:2;
 
   width: 100%;
   height: 2.5rem;

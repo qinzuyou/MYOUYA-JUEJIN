@@ -26,7 +26,7 @@
     </ul>
 
 
-      <div class="centent" ref="aContent">
+      <div class="centent" >
         <div class="title">
           {{articledata.title}}
         </div>
@@ -59,7 +59,7 @@
 
         <!-- <h1>文章id{{ articledata.id}}</h1> -->
 
-        <div class="contentbox" v-html="articledata.content">
+        <div class="contentbox"  v-html="articledata.content" ref="aContent">
           
         </div>
       </div>
